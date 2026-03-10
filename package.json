@@ -1,0 +1,22 @@
+{
+  "name": "forkify-v1",
+  "version": "1.0.0",
+  "description": "recipe app final project",
+  "license": "ISC",
+  "author": "xAvier",
+  "type": "commonjs",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.29.0",
+    "core-js": "^3.48.0",
+    "regenerator-runtime": "^0.14.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@parcel/transformer-sass": "^2.16.4",
+    "parcel": "^2.16.4"
+  }
+}
