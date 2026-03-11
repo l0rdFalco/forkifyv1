@@ -177,7 +177,7 @@
 
   // Only insert newRequire.load when it is actually used.
   // The code in this file is linted against ES5, so dynamic import is not allowed.
-  // INSERT_LOAD_HERE
+  function $parcel$resolve(url) {  url = importMap[url] || url;  return import.meta.resolve(distDir + url);}newRequire.resolve = $parcel$resolve;
 
   Object.defineProperty(newRequire, 'root', {
     get: function () {
@@ -714,8 +714,11 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"7dWZ8":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _runtime = require("regenerator-runtime/runtime"); // Makes async/await work in older browsers
+var _iconsSvg = require("url:../img/icons.svg"); // parcel 1 doesnt need the url: part
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 const recipeContainer = document.querySelector(".recipe");
 const timeout = function(s) {
     return new Promise(function(_, reject) {
@@ -725,9 +728,113 @@ const timeout = function(s) {
     });
 };
 if (module.hot) module.hot.accept();
+function generateMarkup(data) {
+    return `
+      <figure class="recipe__fig">
+        <img src="${data.image}" alt="${data.title}" class="recipe__img" />
+        <h1 class="recipe__title">
+          <span>${data.title}</span>
+        </h1>
+      </figure>
+
+      <div class="recipe__details">
+        <div class="recipe__info">
+          <svg class="recipe__info-icon">
+            <use href="${0, _iconsSvgDefault.default}#icon-clock"></use>
+          </svg>
+          <span class="recipe__info-data recipe__info-data--minutes">${data.cookingTime}</span>
+          <span class="recipe__info-text">minutes</span>
+        </div>
+        <div class="recipe__info">
+          <svg class="recipe__info-icon">
+            <use href="${0, _iconsSvgDefault.default}#icon-users"></use>
+          </svg>
+          <span class="recipe__info-data recipe__info-data--people">${data.servings}</span>
+          <span class="recipe__info-text">servings</span>
+
+          <div class="recipe__info-buttons">
+            <button class="btn--tiny btn--update-servings" data-update-to="${data.servings - 1}">
+              <svg>
+                <use href="${0, _iconsSvgDefault.default}#icon-minus-circle"></use>
+              </svg>
+            </button>
+            <button class="btn--tiny btn--update-servings" data-update-to="${data.servings + 1}">
+              <svg>
+                <use href="${0, _iconsSvgDefault.default}#icon-plus-circle"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="recipe__user-generated ${data.key ? "" : "hidden"}">
+          <svg>
+            <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
+          </svg>
+        </div>
+        <button class="btn--round btn--bookmark">
+          <svg class="">
+            <use href="${0, _iconsSvgDefault.default}#icon-bookmark${data.bookmarked ? "-fill" : ""}"></use>
+          </svg>
+        </button>
+      </div>
+
+      <div class="recipe__ingredients">
+        <h2 class="heading--2">Recipe ingredients</h2>
+        <ul class="recipe__ingredient-list">
+          ${data.ingredients.map(generateMarkupIngredient).join("")}
+      </div>
+
+      <div class="recipe__directions">
+        <h2 class="heading--2">How to cook it</h2>
+        <p class="recipe__directions-text">
+          This recipe was carefully designed and tested by
+          <span class="recipe__publisher">${data.publisher}</span>. Please check out
+          directions at their website.
+        </p>
+        <a
+          class="btn--small recipe__btn"
+          href="${data.sourceUrl}"
+          target="_blank"
+        >
+          <span>Directions</span>
+          <svg class="search__icon">
+            <use href="${0, _iconsSvgDefault.default}#icon-arrow-right"></use>
+          </svg>
+        </a>
+      </div>
+    `;
+}
+function generateMarkupIngredient(ing) {
+    return `
+    <li class="recipe__ingredient">
+      <svg class="recipe__icon">
+        <use href="${0, _iconsSvgDefault.default}#icon-check"></use>
+      </svg>
+      <div class="recipe__quantity">${ing.quantity}</div>
+      <div class="recipe__description">
+        <span class="recipe__unit">${ing.unit}</span>
+        ${ing.description}
+      </div>
+    </li>
+  `;
+}
+function renderSpinner(parentEl) {
+    const markup = `
+      <div class="spinner">
+        <svg>
+          <use href="${(0, _iconsSvgDefault.default)}#icon-loader"></use>
+        </svg>
+      </div>
+    `;
+    parentEl.innerHTML = "";
+    parentEl.insertAdjacentHTML("afterbegin", markup);
+}
 const showRecipe = async function() {
     try {
-        let res1 = await fetch("https://forkify-api.jonas.io/api/v2/recipes/5ed6604591c37cdc054bc886");
+        let recipeId = window.location.hash.slice(1);
+        if (!recipeId) return;
+        renderSpinner(recipeContainer);
+        let res1 = await fetch(`https://forkify-api.jonas.io/api/v2/recipes/${recipeId}`);
         if (!res1.ok) throw new Error("couldn't fetch recipe");
         let { data } = await res1.json();
         let { recipe: recipeObj } = data;
@@ -736,19 +843,23 @@ const showRecipe = async function() {
             title: recipeObj.title,
             publisher: recipeObj.publisher,
             sourceUrl: recipeObj.source_url,
-            img: recipeObj.image_url,
+            image: recipeObj.image_url,
             servings: recipeObj.servings,
             cookingTime: recipeObj.cooking_time,
             ingredients: recipeObj.ingredients
         };
-        console.log(recipeObj);
+        recipeContainer.innerHTML = "";
+        recipeContainer.insertAdjacentHTML("afterbegin", generateMarkup(recipeObj));
     } catch (error) {
         console.log("showRecipe Error: ", error);
     }
 };
-showRecipe();
+[
+    "hashchange",
+    "load"
+].forEach((ev)=>window.addEventListener(ev, showRecipe));
 
-},{"core-js/modules/web.immediate.js":"bzsBv","regenerator-runtime/runtime":"f6ot0"}],"bzsBv":[function(require,module,exports,__globalThis) {
+},{"core-js/modules/web.immediate.js":"bzsBv","regenerator-runtime/runtime":"f6ot0","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","url:../img/icons.svg":"fd0vu"}],"bzsBv":[function(require,module,exports,__globalThis) {
 'use strict';
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require("52e9b3eefbbce1ed");
@@ -2586,6 +2697,39 @@ try {
     else Function("r", "regeneratorRuntime = r")(runtime);
 }
 
-},{}]},["5DuvQ","7dWZ8"], "7dWZ8", "parcelRequireb346", {})
+},{}],"jnFvT":[function(require,module,exports,__globalThis) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"fd0vu":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("icons.0809ef97.svg") + "?" + Date.now();
+
+},{}]},["5DuvQ","7dWZ8"], "7dWZ8", "parcelRequireb346", {}, "./", "/")
 
 //# sourceMappingURL=forkify-v1.4a59a05f.js.map
