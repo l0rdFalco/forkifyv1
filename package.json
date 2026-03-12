@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.29.0",
     "core-js": "^3.48.0",
+    "fracty": "^1.0.12",
     "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
