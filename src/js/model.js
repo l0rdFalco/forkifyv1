@@ -1,3 +1,5 @@
+import {API_URL} from "./config.js"
+
 export const state = {
   recipe: {},
 };
@@ -5,7 +7,7 @@ export const state = {
 export const loadRecipe = async function (recipeId) {
   try {
     let res1 = await fetch(
-      `https://forkify-api.jonas.io/api/v2/recipes/${recipeId}`,
+      `${API_URL}${recipeId}`,
     );
 
     if (!res1.ok) throw new Error("couldn't fetch recipe");
@@ -23,7 +25,10 @@ export const loadRecipe = async function (recipeId) {
       cookingTime: recipeObj.cooking_time,
       ingredients: recipeObj.ingredients,
     };
+
+
   } catch (error) {
     console.log("loadRecipe error: ", error);
+    throw new Error(`loadRecipe error: ${error}`)
   }
 };

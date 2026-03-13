@@ -4,18 +4,7 @@ import "regenerator-runtime/runtime"; // Makes async/await work in older browser
 import * as model from "./model.js";
 import recipeView from "./views/recipeView.js";
 
-
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
-
 if (module.hot) module.hot.accept();
-
-
 
 const controlRecipe = async function () {
   try {
@@ -27,11 +16,14 @@ const controlRecipe = async function () {
 
     await model.loadRecipe(recipeId);
 
-    recipeView.render(model.state.recipe)
-
+    recipeView.render(model.state.recipe);
   } catch (error) {
     console.log("showRecipe Error: ", error);
   }
 };
 
-["hashchange", "load"].forEach((ev) => window.addEventListener(ev, controlRecipe));
+function init() {
+  recipeView.addHandlerRender(controlRecipe);
+}
+
+init();

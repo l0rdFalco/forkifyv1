@@ -56,6 +56,12 @@ The main purpose of the MVC is to separate business logic from appli cation logi
 it dispatches tasks to the model and the view
 It is only the controller that imports and executes functions the model and the view; never the other way around
 
+### event handling in MVC
+The most common pattern for this is called the _publisher-subscriber pattern_
+
+event listeners should be attached to DOM elements in the view module but the events should be handled by controller functions in the controller module
+
+
 
 
 

@@ -720,13 +720,6 @@ var _runtime = require("regenerator-runtime/runtime"); // Makes async/await work
 var _modelJs = require("./model.js");
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
-const timeout = function(s) {
-    return new Promise(function(_, reject) {
-        setTimeout(function() {
-            reject(new Error(`Request took too long! Timeout after ${s} second`));
-        }, s * 1000);
-    });
-};
 if (module.hot) module.hot.accept();
 const controlRecipe = async function() {
     try {
@@ -739,10 +732,10 @@ const controlRecipe = async function() {
         console.log("showRecipe Error: ", error);
     }
 };
-[
-    "hashchange",
-    "load"
-].forEach((ev)=>window.addEventListener(ev, controlRecipe));
+function init() {
+    (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipe);
+}
+init();
 
 },{"core-js/modules/web.immediate.js":"bzsBv","regenerator-runtime/runtime":"f6ot0","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./model.js":"3QBkH","./views/recipeView.js":"3wx5k"}],"bzsBv":[function(require,module,exports,__globalThis) {
 'use strict';
@@ -2617,12 +2610,13 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
+var _configJs = require("./config.js");
 const state = {
     recipe: {}
 };
 const loadRecipe = async function(recipeId) {
     try {
-        let res1 = await fetch(`https://forkify-api.jonas.io/api/v2/recipes/${recipeId}`);
+        let res1 = await fetch(`${(0, _configJs.API_URL)}${recipeId}`);
         if (!res1.ok) throw new Error("couldn't fetch recipe");
         let { data } = await res1.json();
         let { recipe: recipeObj } = data;
@@ -2638,8 +2632,25 @@ const loadRecipe = async function(recipeId) {
         };
     } catch (error) {
         console.log("loadRecipe error: ", error);
+        throw new Error(`loadRecipe error: ${error}`);
     }
 };
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./config.js":"2hPh4"}],"2hPh4":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "API_URL", ()=>API_URL);
+parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
+parcelHelpers.export(exports, "RES_PER_PAGE", ()=>RES_PER_PAGE);
+parcelHelpers.export(exports, "KEY", ()=>KEY);
+parcelHelpers.export(exports, "MODAL_CLOSE_SEC", ()=>MODAL_CLOSE_SEC);
+parcelHelpers.export(exports, "APP_URL", ()=>APP_URL);
+const API_URL = 'https://forkify-api.jonas.io/api/v2/recipes/';
+const TIMEOUT_SEC = 10;
+const RES_PER_PAGE = 10;
+const KEY = '<YOUR_KEY>';
+const MODAL_CLOSE_SEC = 2.5;
+const APP_URL = "https://forkify-v2.jonas.io/";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"3wx5k":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -2753,6 +2764,14 @@ class RecipeView {
           </div>
         </li>
       `;
+    }
+    addHandlerRender(cb) {
+        [
+            "hashchange",
+            "load"
+        ].forEach((ev)=>{
+            window.addEventListener(ev, cb);
+        });
     }
     render(data) {
         this.#data = data;

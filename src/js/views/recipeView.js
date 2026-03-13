@@ -123,6 +123,15 @@ class RecipeView {
       `;
   }
 
+  addHandlerRender (cb){
+
+    ["hashchange", "load"].forEach(ev=>{
+      window.addEventListener(ev, cb)
+    })
+
+
+  }
+
 
   render(data) {
     this.#data = data;
