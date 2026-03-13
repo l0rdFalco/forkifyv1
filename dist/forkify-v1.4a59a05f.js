@@ -730,6 +730,7 @@ const controlRecipe = async function() {
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
     } catch (error) {
         console.log("showRecipe Error: ", error);
+        (0, _recipeViewJsDefault.default).renderError(error);
     }
 };
 function init() {
@@ -2772,6 +2773,34 @@ class RecipeView {
         ].forEach((ev)=>{
             window.addEventListener(ev, cb);
         });
+    }
+    renderError(message = this._errorMessage) {
+        const markup = `
+      <div class="error">
+        <div>
+          <svg>
+            <use href="${(0, _iconsSvgDefault.default)}#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
+    `;
+        this._clear();
+        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+    renderMessage(message = this._message) {
+        const markup = `
+      <div class="message">
+        <div>
+          <svg>
+            <use href="${(0, _iconsSvgDefault.default)}#icon-smile"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
+    `;
+        this._clear();
+        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
     render(data) {
         this.#data = data;
