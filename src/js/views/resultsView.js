@@ -3,7 +3,7 @@ import icons from "url:../../img/icons.svg"; // parcel 1 doesnt need the url: pa
 class ResultsView {
   #parentElement = document.querySelector(".results");
   #data;
-  #errorMessage = "something broke";
+  #errorMessage = "something went wrong";
   #message = "success";
 
   _clear() {

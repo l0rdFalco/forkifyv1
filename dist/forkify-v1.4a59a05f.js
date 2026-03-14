@@ -743,10 +743,11 @@ const controlSearchResults = async function() {
         let searchQuery = (0, _searchViewJsDefault.default).getQuery();
         await _modelJs.loadSearchResults(searchQuery);
         let resultsArr = _modelJs.state.search.results;
+        if (resultsArr.length === 0) throw new Error("no recipes for that query");
         (0, _resultsViewJsDefault.default).render(resultsArr);
     } catch (error) {
         console.log("controlSearchResults error:", error);
-        (0, _resultsViewJsDefault.default).renderError();
+        (0, _resultsViewJsDefault.default).renderError(error);
     }
 };
 function init() {
@@ -2962,7 +2963,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class ResultsView {
     #parentElement = document.querySelector(".results");
     #data;
-    #errorMessage = "something broke";
+    #errorMessage = "something went wrong";
     #message = "success";
     _clear() {
         this.#parentElement.innerHTML = "";
@@ -3044,12 +3045,12 @@ parcelHelpers.defineInteropFlag(exports);
 class SearchView {
     _parentEl = document.querySelector(".search");
     getQuery() {
-        const query = this._parentEl.querySelector(".search__field").value;
+        const query = this._parentEl.querySelector('.search__field').value;
         this._clearInput();
         return query;
     }
     _clearInput() {
-        this._parentEl.querySelector(".search__field").value = "";
+        this._parentEl.querySelector('.search__field').value = '';
     }
     addHandlerSearch(cb) {
         this._parentEl.addEventListener("submit", function(e) {
