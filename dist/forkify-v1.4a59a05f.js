@@ -743,7 +743,7 @@ const controlSearchResults = async function() {
         let searchQuery = (0, _searchViewJsDefault.default).getQuery();
         await _modelJs.loadSearchResults(searchQuery);
         let resultsArr = _modelJs.state.search.results;
-        if (resultsArr.length === 0) throw new Error("no recipes for that query");
+        if (resultsArr.length === 0 || !resultsArr) throw new Error("no recipes for that query");
         (0, _resultsViewJsDefault.default).render(resultsArr);
     } catch (error) {
         console.log("controlSearchResults error:", error);

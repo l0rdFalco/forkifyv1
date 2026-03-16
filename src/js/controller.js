@@ -35,7 +35,7 @@ const controlSearchResults = async function () {
 
     let resultsArr = model.state.search.results;
 
-    if(resultsArr.length===0) throw new Error("no recipes for that query")
+    if(resultsArr.length===0 || !resultsArr) throw new Error("no recipes for that query")
 
     resultsView.render(resultsArr)
 

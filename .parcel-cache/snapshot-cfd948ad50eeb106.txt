@@ -5133,7 +5133,7 @@
 94/home/falco/CODE/drafts/forkify-v1/node_modules/core-js/internals/array-species-constructor.js1773136493074188912 0
 81/home/falco/CODE/drafts/forkify-v1/node_modules/@parcel/error-overlay/src/effects1773136747417185488 1
 85/home/falco/CODE/drafts/forkify-v1/node_modules/resolve/test/node_path/y/ccc/index.js1773138310025769337 0
-66/home/falco/CODE/drafts/forkify-v1/dist/forkify-v1.4a59a05f.js.map1773505916522707125 0
+66/home/falco/CODE/drafts/forkify-v1/dist/forkify-v1.4a59a05f.js.map1773684828235394537 0
 42/home/falco/CODE/drafts/forkify-v1/src/img1773135941315202561 1
 97/home/falco/CODE/drafts/forkify-v1/node_modules/@swc/helpers/cjs/_check_private_redeclaration.cjs1773136747355247049 0
 54/home/falco/CODE/drafts/forkify-v1/node_modules/@babel1773138309293143986 1
@@ -5507,7 +5507,7 @@
 92/home/falco/CODE/drafts/forkify-v1/node_modules/@babel/helpers/lib/helpers/arrayWithHoles.js1773138264110145103 0
 60/home/falco/CODE/drafts/forkify-v1/node_modules/@parcel/rust1773136492145188935 1
 94/home/falco/CODE/drafts/forkify-v1/node_modules/@babel/traverse/lib/path/inference/util.js.map1773138264131145103 0
-55/home/falco/CODE/drafts/forkify-v1/src/js/controller.js1773505916330707110 0
+55/home/falco/CODE/drafts/forkify-v1/src/js/controller.js1773506051035717277 0
 80/home/falco/CODE/drafts/forkify-v1/node_modules/update-browserslist-db/README.md1773136492073188937 0
 78/home/falco/CODE/drafts/forkify-v1/node_modules/core-js/es/typed-array/from.js1773136495046188864 0
 92/home/falco/CODE/drafts/forkify-v1/node_modules/@babel/helpers/lib/helpers/maybeArrayLike.js1773138264478145094 0
@@ -6986,7 +6986,7 @@
 95/home/falco/CODE/drafts/forkify-v1/node_modules/@parcel/watcher/src/watchman/WatchmanBackend.cc1773136492420188929 0
 92/home/falco/CODE/drafts/forkify-v1/node_modules/core-js/stable/string/virtual/replace-all.js1773136496276188833 0
 80/home/falco/CODE/drafts/forkify-v1/node_modules/core-js/es/array/virtual/sort.js1773136496519188827 0
-39/home/falco/CODE/drafts/forkify-v1/dist1773505916523707125 1
+39/home/falco/CODE/drafts/forkify-v1/dist1773684828235394537 1
 107/home/falco/CODE/drafts/forkify-v1/node_modules/@babel/core/lib/transformation/file/babel-7-helpers.cjs.map1773138264320281199 0
 111/home/falco/CODE/drafts/forkify-v1/node_modules/@parcel/core/test/fixtures/local-plugin-config-pkg/node_modules1773136493097188912 1
 74/home/falco/CODE/drafts/forkify-v1/node_modules/resolve/test/resolver/quux1773138310036143967 1
@@ -8582,7 +8582,7 @@
 71/home/falco/CODE/drafts/forkify-v1/node_modules/@swc/core-linux-x64-gnu1773136491852188943 1
 108/home/falco/CODE/drafts/forkify-v1/node_modules/@parcel/core/test/fixtures/local-plugin-config-pkg/.parcelrc1773136492304188932 0
 56/home/falco/CODE/drafts/forkify-v1/node_modules/regjsgen1773138309744143974 1
-62/home/falco/CODE/drafts/forkify-v1/dist/forkify-v1.4a59a05f.js1773505916520707124 0
+62/home/falco/CODE/drafts/forkify-v1/dist/forkify-v1.4a59a05f.js1773684828214394536 0
 60/home/falco/CODE/drafts/forkify-v1/node_modules/@swc/counter1773136491901188941 1
 70/home/falco/CODE/drafts/forkify-v1/node_modules/color-convert/route.js1773136492072188937 0
 70/home/falco/CODE/drafts/forkify-v1/node_modules/@swc/counter/README.md1773136491901188941 0
