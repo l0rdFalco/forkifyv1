@@ -5,6 +5,7 @@ import * as model from "./model.js";
 import recipeView from "./views/recipeView.js";
 import resultsView from "./views/resultsView.js";
 import searchView from "./views/searchView.js";
+import paginationView from "./views/paginationView.js";
 
 if (module.hot) module.hot.accept();
 
@@ -32,22 +33,33 @@ const controlSearchResults = async function () {
 
     await model.loadSearchResults(searchQuery);
 
-
     let resultsArr = model.state.search.results;
 
-    if(resultsArr.length===0 || !resultsArr) throw new Error("no recipes for that query")
+    if (resultsArr.length === 0 || !resultsArr)
+      throw new Error("no recipes for that query");
 
-    resultsView.render(resultsArr)
+    //resultsView.render(resultsArr)// renders all results
+    resultsView.render(model.getSearchResultsPage()); // renders paginated results
 
+    //rebder pagination buttons
+    paginationView.render(model.state.search);
   } catch (error) {
     console.log("controlSearchResults error:", error);
-    resultsView.renderError(error)
+    resultsView.renderError(error);
   }
+};
+
+const controlPagination = function (page) {
+  console.log("page:", page);
+  resultsView.render(model.getSearchResultsPage(page)); // renders paginated results
+
+  paginationView.render(model.state.search);
 };
 
 function init() {
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 }
 
 init();
