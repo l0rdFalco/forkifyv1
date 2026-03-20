@@ -760,10 +760,18 @@ const controlPagination = function(page) {
     (0, _resultsViewJsDefault.default).render(_modelJs.getSearchResultsPage(page)); // renders paginated results
     (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
 };
+const controlServings = function(newServingsVal) {
+    /**
+   * 1. update the recipe servings in the state
+   * 2. update the recipeView
+   */ _modelJs.updateServings(newServingsVal);
+    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe); // inefficient to rerender the whole page on each update
+};
 function init() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipe);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagination);
+    (0, _recipeViewJsDefault.default).addHandlerUpdateServings(controlServings);
 }
 init();
 
@@ -2612,6 +2620,7 @@ parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
 parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage);
+parcelHelpers.export(exports, "updateServings", ()=>updateServings);
 var _configJs = require("./config.js");
 const state = {
     recipe: {},
@@ -2669,6 +2678,12 @@ const getSearchResultsPage = function(page = state.search.page) {
     const start = (page - 1) * (0, _configJs.RES_PER_PAGE);
     const end = page * state.search.resultsPerPage;
     return state.search.results.slice(start, end);
+};
+const updateServings = function(newServingsNum) {
+    state.recipe.ingredients.forEach((ing)=>{
+        ing.quantity = ing.quantity * newServingsNum / state.recipe.servings;
+    });
+    state.recipe.servings = newServingsNum;
 };
 
 },{"./config.js":"2hPh4","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"2hPh4":[function(require,module,exports,__globalThis) {
@@ -2838,6 +2853,14 @@ class RecipeView {
             "load"
         ].forEach((ev)=>{
             window.addEventListener(ev, cb);
+        });
+    }
+    addHandlerUpdateServings(handler) {
+        this.#parentElement.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn--update-servings');
+            if (!btn) return;
+            const { updateTo } = btn.dataset;
+            if (+updateTo > 0) handler(+updateTo);
         });
     }
     renderError(message = this.#errorMessage) {

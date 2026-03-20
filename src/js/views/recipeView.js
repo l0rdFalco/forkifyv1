@@ -134,6 +134,15 @@ class RecipeView {
     });
   }
 
+  addHandlerUpdateServings(handler) {
+    this.#parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--update-servings');
+      if (!btn) return;
+      const { updateTo } = btn.dataset;
+      if (+updateTo > 0) handler(+updateTo); 
+    });
+  }
+
   renderError(message = this.#errorMessage) {
     const markup = `
       <div class="error">
