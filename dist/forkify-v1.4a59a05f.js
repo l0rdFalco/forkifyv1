@@ -765,7 +765,8 @@ const controlServings = function(newServingsVal) {
    * 1. update the recipe servings in the state
    * 2. update the recipeView
    */ _modelJs.updateServings(newServingsVal);
-    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe); // inefficient to rerender the whole page on each update
+    // recipeView.render(model.state.recipe); // inefficient to rerender the whole page on each update
+    (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
 function init() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipe);
@@ -2690,15 +2691,15 @@ const updateServings = function(newServingsNum) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
+parcelHelpers.export(exports, "KEY", ()=>KEY);
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
 parcelHelpers.export(exports, "RES_PER_PAGE", ()=>RES_PER_PAGE);
-parcelHelpers.export(exports, "KEY", ()=>KEY);
 parcelHelpers.export(exports, "MODAL_CLOSE_SEC", ()=>MODAL_CLOSE_SEC);
 parcelHelpers.export(exports, "APP_URL", ()=>APP_URL);
 const API_URL = 'https://forkify-api.jonas.io/api/v2/recipes/';
+const KEY = "b7eba7bc-2075-4905-b1f2-cc28968fe84d";
 const TIMEOUT_SEC = 10;
 const RES_PER_PAGE = 10;
-const KEY = '<YOUR_KEY>';
 const MODAL_CLOSE_SEC = 2.5;
 const APP_URL = "https://forkify-v2.jonas.io/";
 
@@ -2856,8 +2857,8 @@ class RecipeView {
         });
     }
     addHandlerUpdateServings(handler) {
-        this.#parentElement.addEventListener('click', function(e) {
-            const btn = e.target.closest('.btn--update-servings');
+        this.#parentElement.addEventListener("click", function(e) {
+            const btn = e.target.closest(".btn--update-servings");
             if (!btn) return;
             const { updateTo } = btn.dataset;
             if (+updateTo > 0) handler(+updateTo);
@@ -2896,6 +2897,21 @@ class RecipeView {
         this._clear();
         let markup = this._generateMarkup();
         this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    update(data) {
+        this.#data = data;
+        const newMarkup = this._generateMarkup();
+        const newDOM = document.createRange().createContextualFragment(newMarkup);
+        const newElements = Array.from(newDOM.querySelectorAll("*"));
+        const curElements = Array.from(this.#parentElement.querySelectorAll("*"));
+        newElements.forEach((newEl, i)=>{
+            const curEl = curElements[i];
+            // console.log(curEl, newEl.isEqualNode(curEl));
+            // Updates changed TEXT
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") curEl.textContent = newEl.textContent;
+            // Updates changed ATTRIBUTES
+            if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach((attr)=>curEl.setAttribute(attr.name, attr.value));
+        });
     }
 }
 exports.default = new RecipeView();

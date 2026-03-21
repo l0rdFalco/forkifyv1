@@ -63,14 +63,15 @@ const controlServings = function (newServingsVal) {
    */
 
   model.updateServings(newServingsVal);
-  recipeView.render(model.state.recipe); // inefficient to rerender the whole page on each update
+  // recipeView.render(model.state.recipe); // inefficient to rerender the whole page on each update
+ recipeView.update(model.state.recipe)
 };
 
 function init() {
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
-  recipeView.addHandlerUpdateServings(controlServings)
+  recipeView.addHandlerUpdateServings(controlServings);
 }
 
 init();

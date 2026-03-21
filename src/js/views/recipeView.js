@@ -4,8 +4,8 @@ import fracty from "fracty";
 class RecipeView {
   #parentElement = document.querySelector(".recipe");
   #data;
-  #errorMessage = "something broke"
-  #message = "success"
+  #errorMessage = "something broke";
+  #message = "success";
 
   _clear() {
     this.#parentElement.innerHTML = "";
@@ -135,11 +135,11 @@ class RecipeView {
   }
 
   addHandlerUpdateServings(handler) {
-    this.#parentElement.addEventListener('click', function (e) {
-      const btn = e.target.closest('.btn--update-servings');
+    this.#parentElement.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn--update-servings");
       if (!btn) return;
       const { updateTo } = btn.dataset;
-      if (+updateTo > 0) handler(+updateTo); 
+      if (+updateTo > 0) handler(+updateTo);
     });
   }
 
@@ -181,6 +181,35 @@ class RecipeView {
     let markup = this._generateMarkup();
 
     this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+  }
+
+  update(data) {
+    this.#data = data;
+    const newMarkup = this._generateMarkup();
+
+    const newDOM = document.createRange().createContextualFragment(newMarkup);
+    const newElements = Array.from(newDOM.querySelectorAll("*"));
+    const curElements = Array.from(this.#parentElement.querySelectorAll("*"));
+
+    newElements.forEach((newEl, i) => {
+      const curEl = curElements[i];
+      // console.log(curEl, newEl.isEqualNode(curEl));
+
+      // Updates changed TEXT
+      if (
+        !newEl.isEqualNode(curEl) &&
+        newEl.firstChild?.nodeValue.trim() !== ""
+      ) {
+        curEl.textContent = newEl.textContent;
+      }
+
+      // Updates changed ATTRIBUTES
+      if (!newEl.isEqualNode(curEl)) {
+        Array.from(newEl.attributes).forEach((attr) =>
+          curEl.setAttribute(attr.name, attr.value),
+        );
+      }
+    });
   }
 }
 
