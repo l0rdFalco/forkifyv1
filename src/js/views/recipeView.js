@@ -143,6 +143,16 @@ class RecipeView {
     });
   }
 
+  addHandlerBookmark(cb){
+    this.#parentElement.addEventListener("click", function(e){
+      const bookmarkBtn = e.target.closest(".btn--bookmark");
+
+      if(!bookmarkBtn) return;
+
+      cb()
+    })
+
+  }
   renderError(message = this.#errorMessage) {
     const markup = `
       <div class="error">
